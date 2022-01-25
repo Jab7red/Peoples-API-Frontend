@@ -8,6 +8,7 @@ const Main = (props) => {
 
     const URL = "http://localhost:4000/people/";
 
+    // fetch people data from backend
     const getPeople = async () => {
         const response = await fetch(URL);
         const data = await response.json();
@@ -19,7 +20,7 @@ const Main = (props) => {
         await fetch(URL, {
             method: "POST",
             headers: {
-                "Content-Type": "Application/json",
+                "Content-Type": "Application/JSON",
             },
             body: JSON.stringify(person),
         });
