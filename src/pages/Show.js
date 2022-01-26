@@ -5,7 +5,7 @@ const Show = (props) => {
     const people = props.people;
     const person = people.find(p => p._id === id);
 
-    // state for form
+    // state for edit form
     const [ editForm, setEditForm ] = useState(person);
 
     // handleChange function for form 
