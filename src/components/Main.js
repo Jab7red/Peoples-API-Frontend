@@ -28,6 +28,28 @@ const Main = (props) => {
         getPeople();
     };
 
+    const updatePeople = async (person, id) => {
+        //make put request to create people
+        await fetch(URL + id, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "Application/JSON",
+            },
+            body: JSON.stringify(person),
+        });
+        // update list of people
+        getPeople();
+    };
+
+    const deletePeople = async (id) => {
+        // make delete request to create people
+        await fetch (URL + id, {
+            method: "DELETE",
+        });
+        // update list of people
+        getPeople();
+    }
+
     useEffect(() => getPeople(), []);
 
     return (
@@ -36,7 +58,12 @@ const Main = (props) => {
                 <Route exact path="/">
                     <Index people={ people } createPeople={ createPeople } />
                 </Route>
-                <Route path="/people/:id" render={(rp) => (<Show {...rp} />)} />
+                <Route path="/people/:id" render={(rp) => 
+                    (<Show 
+                        people={people} 
+                        updatePeople={updatePeople} 
+                        deletePeople={deletePeople} 
+                        {...rp} />)} />
             </Switch>
         </main>
     )
