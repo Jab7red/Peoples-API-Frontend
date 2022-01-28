@@ -6,7 +6,7 @@ import Show from "../pages/Show";
 const Main = (props) => {
     const [ people, setPeople ] = useState(null);
 
-    const URL = "http://localhost:4000/people/";
+    const URL = "https://jb-people-api.herokuapp.com/people/";
 
     // fetch people data from backend
     const getPeople = async () => {
