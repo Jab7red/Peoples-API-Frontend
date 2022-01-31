@@ -1,3 +1,4 @@
+import { login, logout } from '../services/firebase';
 import { Link } from "react-router-dom";
 
 const Header = (props) => {
@@ -6,6 +7,10 @@ const Header = (props) => {
             <Link to="/">
                 <div>People App</div>
             </Link>
+            <ul>
+                <li onClick={login}>Login</li>
+                <li onClick={logout}>Logout</li>
+            </ul>
         </nav>
     );
 }
