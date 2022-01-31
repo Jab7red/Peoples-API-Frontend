@@ -6,12 +6,19 @@ import Show from "../pages/Show";
 const Main = (props) => {
     const [people, setPeople] = useState(null);
 
-    // const URL = "https://jb-people-api.herokuapp.com/people/";
-    const URL = "http://localhost:4000/people/";
+    const URL = "https://jb-people-api.herokuapp.com/people/";
+    // const URL = "http://localhost:4000/people/";
 
     // fetch people data from backend
     const getPeople = async () => {
-        const response = await fetch(URL);
+        if(!props.user) return;
+        const token = await props.user.getIdToken();
+        const response = await fetch(URL, {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        });
         const data = await response.json();
         setPeople(data);
     };
@@ -56,7 +63,13 @@ const Main = (props) => {
         getPeople();
     }
 
-    useEffect(() => getPeople(), []);
+    useEffect(() => {
+        if(props.user) {
+            getPeople()
+        } else {
+            setPeople(null);
+        }
+    }, [props.user]);
 
     return (
         <main>
