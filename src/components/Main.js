@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import Index from "../pages/Index";
 import Show from "../pages/Show";
 
 const Main = (props) => {
-    const [ people, setPeople ] = useState(null);
+    const [people, setPeople] = useState(null);
 
     const URL = "https://jb-people-api.herokuapp.com/people/";
 
@@ -17,6 +17,7 @@ const Main = (props) => {
 
     const createPeople = async (person) => {
         // make post request to create people
+        if(!props.user) return; // do not run any code in this function if there's no user
         await fetch(URL, {
             method: "POST",
             headers: {
@@ -30,6 +31,7 @@ const Main = (props) => {
 
     const updatePeople = async (person, id) => {
         //make put request to create people
+        if(!props.user) return; // do not run any code in this function if there's no user
         await fetch(URL + id, {
             method: "PUT",
             headers: {
@@ -43,7 +45,8 @@ const Main = (props) => {
 
     const deletePeople = async (id) => {
         // make delete request to create people
-        await fetch (URL + id, {
+        if(!props.user) return; // do not run any code in this function if there's no user
+        await fetch(URL + id, {
             method: "DELETE",
         });
         // update list of people
@@ -56,14 +59,18 @@ const Main = (props) => {
         <main>
             <Switch>
                 <Route exact path="/">
-                    <Index people={ people } createPeople={ createPeople } />
+                    <Index people={people} createPeople={createPeople} />
                 </Route>
-                <Route path="/people/:id" render={(rp) => 
-                    (<Show 
-                        people={people} 
-                        updatePeople={updatePeople} 
-                        deletePeople={deletePeople} 
-                        {...rp} />)} />
+                <Route path="/people/:id" render={(rp) =>
+                (props.user ? <Show
+                    people={people}
+                    updatePeople={updatePeople}
+                    deletePeople={deletePeople}
+                    {...rp}
+                />
+                    :
+                    <Redirect to="/" />
+                )} />
             </Switch>
         </main>
     )
