@@ -6,7 +6,8 @@ import Show from "../pages/Show";
 const Main = (props) => {
     const [people, setPeople] = useState(null);
 
-    const URL = "https://jb-people-api.herokuapp.com/people/";
+    // const URL = "https://jb-people-api.herokuapp.com/people/";
+    const URL = "http://localhost:4000/people/";
 
     // fetch people data from backend
     const getPeople = async () => {
@@ -18,10 +19,12 @@ const Main = (props) => {
     const createPeople = async (person) => {
         // make post request to create people
         if(!props.user) return; // do not run any code in this function if there's no user
+        const token = await props.user.getIdToken();
         await fetch(URL, {
             method: "POST",
             headers: {
                 "Content-Type": "Application/JSON",
+                "Authorization": "Bearer " + token
             },
             body: JSON.stringify(person),
         });
