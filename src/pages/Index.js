@@ -16,6 +16,7 @@ const Index = (props) => {
 
     // handle submit function for form
     const handleSubmit = (event) => {
+        if (!props.user) return; // do not run any code in this function if there's no user
         event.preventDefault();
         props.createPeople(newForm);
         setNewForm({
@@ -44,15 +45,19 @@ const Index = (props) => {
 
     return (
         <section>
-            <form onSubmit={handleSubmit}>
-                <input type="text" value={newForm.name}
-                    name="name" placeholder="name" onChange={handleChange} />
-                <input type="text" value={newForm.image}
-                    name="image" placeholder="image URL" onChange={handleChange} />
-                <input type="text" value={newForm.title}
-                    name="title" placeholder="title" onChange={handleChange} />
-                <input type="submit" value="Create Person" />
-            </form>
+            {
+                props.user &&
+
+                <form onSubmit={handleSubmit}>
+                    <input type="text" value={newForm.name}
+                        name="name" placeholder="name" onChange={handleChange} />
+                    <input type="text" value={newForm.image}
+                        name="image" placeholder="image URL" onChange={handleChange} />
+                    <input type="text" value={newForm.title}
+                        name="title" placeholder="title" onChange={handleChange} />
+                    <input type="submit" value="Create Person" />
+                </form>
+            }
             {props.people ? loaded() : loading()}
         </section>
     );
