@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Index from "../pages/Index";
 import Show from "../pages/Show";
@@ -8,7 +8,7 @@ const Main = (props) => {
 
     const URL = "https://jb-people-api.herokuapp.com/people/";
     // const URL = "http://localhost:4000/people/";
-
+    const getPeopleRef = useRef();
     // fetch people data from backend
     const getPeople = async () => {
         if(!props.user) return;
@@ -62,6 +62,10 @@ const Main = (props) => {
         // update list of people
         getPeople();
     }
+
+    useEffect(() => {
+        getPeopleRef.current = getPeople;
+    });
 
     useEffect(() => {
         if(props.user) {
